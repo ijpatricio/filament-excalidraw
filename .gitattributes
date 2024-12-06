@@ -26,3 +26,10 @@
 /tailwind.config.js     export-ignore
 /testbench.yaml         export-ignore
 /UPGRADING.md           export-ignore
+
+# Having playground inside the package repo
+/.dockerignore          export-ignore
+/docker-compose.yml     export-ignore
+/docker                             export-ignore
+/e2e                                export-ignore
+/playground-filament-whiteboard     export-ignore

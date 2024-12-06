@@ -1,0 +1,25 @@
+services:
+  webapp:
+    build:
+      context: .
+      dockerfile: docker/dev/runtimes/php/Dockerfile
+      args:
+        USER_ID: $USER_ID
+        GROUP_ID: $GROUP_ID
+    image: playground-filament-excalidraw
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    ports:
+      - '${APP_PORT:-8080}:8080'
+      - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+    volumes:
+      # The wrapper app is mounted to `/var/www/html` folder, as a regular website
+      - './playground-filament-whiteboard:/var/www/html'
+      # The root dir is mounted on another folder.
+      # The playground app will use this from composer.json configuration.
+      - '.:/var/www/filament-excalidraw'
+    networks:
+      - web
+
+networks:
+  web:

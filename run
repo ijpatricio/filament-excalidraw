@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# Inspired on https://github.com/adriancooney/Taskfile
+#
+# Install an alias, to be able to simply execute `run`
+# echo 'alias run=./scripts/run' >> ~/.aliases
+#
+
+set -e
+
+function help {
+    echo "$0 <task> <args>"
+    echo "Tasks:"
+    compgen -A function | cat -n
+}
+
+function default {
+    help
+}
+
+function setIDS {
+    export USER_ID=$(id -u)
+    export GROUP_ID=$(id -g)
+}
+
+function prepare:container {
+    setIDS
+    docker compose build
+}
+
+function dev:server {
+    setIDS
+    docker compose up --remove-orphans --force-recreate
+}
+
+function ci:server {
+    setIDS
+    docker compose up -d --remove-orphans --force-recreate
+}
+
+function dev:npm {
+    setIDS
+    docker compose exec webapp bash -c "npm ci ; npm run dev"
+}
+
+function dev:bash {
+    setIDS
+    docker compose exec webapp bash
+}
+
+TIMEFORMAT="Task completed in %3lR"
+time "${@:-default}"
