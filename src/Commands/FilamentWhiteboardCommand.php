@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Ijpatricio\FilamentExcalidraw\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class FilamentExcalidrawCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'filament-excalidraw';
 
     public $description = 'My command';
 
