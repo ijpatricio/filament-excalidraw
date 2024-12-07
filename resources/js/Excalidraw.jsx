@@ -44,15 +44,15 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
         // Register the event listener
         const unsubscribe = Livewire.on('boot-whiteboard-with', () => {
 
-            wire.loadData().then(data => {
+            wire.loadData().then(async data => {
                 if (data === false) {
                     alert('Failed to load Whiteboard.')
                     return
                 }
 
-                excalidrawAPI.addFiles(Array.from(data.files))
+                await excalidrawAPI.addFiles(Array.from(data.files))
 
-                excalidrawAPI.updateScene({
+                await excalidrawAPI.updateScene({
                     elements: data.elements,
                 })
 
