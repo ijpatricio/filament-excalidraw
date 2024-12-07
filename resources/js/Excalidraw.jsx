@@ -1,5 +1,5 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
-import { Excalidraw, MainMenu } from '@excalidraw/excalidraw'
+import { Excalidraw, MainMenu, loadFromBlob, serializeAsJSON } from '@excalidraw/excalidraw'
 import * as CustomMenuItems from './Menu/CustomMenuItems.jsx'
 import { testData } from './testData'
 import './styles.css'
@@ -38,40 +38,20 @@ const ExcalidrawCustom = forwardRef(({ wire, ...props }, ref) => {
             return
         }
 
-        const processFiles = (files) => {
-            return files.map(file => ({
-                id: file.id,
-                dataURL: file.dataURL,
-                mimeType: file.mimeType,
-                created: file.created || Date.now(),
-                lastRetrieved: Date.now()
-            }));
-        };
-
         try {
             // First update scene
             await excalidrawAPI.updateScene({
                 elements: data.elements,
             });
 
-            await new Promise(resolve => setTimeout(resolve, 100));
+            // Then add Files
+            await excalidrawAPI.addFiles(
+                Object.values(data.files)
+            )
 
-
-            const files = Array.from(data.files)
-
-            // Then add files if they exist
-            if (files && files.length > 0) {
-
-                const processedFiles = processFiles(files)
-
-                await excalidrawAPI.addFiles(processedFiles)
-            }
-
-            excalidrawAPI.refresh()
         } catch (error) {
             console.error('Error updating scene:', error)
         }
-
 
         excalidrawAPI.setToast({
             message: 'Whiteboard loaded successfully',
