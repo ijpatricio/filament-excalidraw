@@ -35,7 +35,7 @@ class ListWhiteboards extends ListRecords
             fn() => new HtmlString("
                 <script>
                     setTimeout(() => {
-//                        document.querySelector('tbody div > div > button > span').click()
+                        document.querySelector('tbody div > div > button > span').click()
                     }, 400)
                 </script>
             ")

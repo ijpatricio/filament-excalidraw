@@ -50,7 +50,7 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
                     return
                 }
 
-                excalidrawAPI?.updateScene(data)
+                excalidrawAPI.updateScene(data)
             })
         })
 
