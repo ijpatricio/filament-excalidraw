@@ -3,9 +3,11 @@
     use Filament\Support\Facades\FilamentAsset;
 @endphp
 
+
 <div
-    ax-load-css="{{ FilamentAsset::getStyleHref('filament-excalidraw-styles', package: 'ijpatricio/filament-excalidraw') }}"
-    ax-load-src="{{ FilamentAsset::getScriptSrc('filament-excalidraw-scripts', package: 'ijpatricio/filament-excalidraw') }}"
+{{--/* Playground Vite (Faster vs package Esbuild commands)  */--}}
+{{--    ax-load-css="{{ FilamentAsset::getStyleHref('filament-excalidraw-styles', package: 'ijpatricio/filament-excalidraw') }}"--}}
+{{--    ax-load-src="{{ FilamentAsset::getScriptSrc('filament-excalidraw-scripts', package: 'ijpatricio/filament-excalidraw') }}"--}}
     x-init="
         window.Mingle.Elements = window.Mingle.Elements || {}
         window.Mingle.Elements['Excalidraw']

@@ -105,8 +105,8 @@ class FilamentExcalidrawServiceProvider extends PackageServiceProvider
     {
         return [
             // AlpineComponent::make('filament-excalidraw', __DIR__ . '/../resources/dist/components/filament-excalidraw.js'),
-            Css::make('filament-excalidraw-styles', __DIR__ . '/../resources/dist/filament-excalidraw.css'),
-            Js::make('filament-excalidraw-scripts', __DIR__ . '/../resources/dist/filament-excalidraw.js'),
+            // Css::make('filament-excalidraw-styles', __DIR__ . '/../resources/dist/filament-excalidraw.css'),
+            // Js::make('filament-excalidraw-scripts', __DIR__ . '/../resources/dist/filament-excalidraw.js'),
         ];
     }
 

@@ -1,34 +1,85 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useState, useRef } from 'react'
-import { Excalidraw as ExcalidrawApp, MainMenu } from "@excalidraw/excalidraw"
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+import { Excalidraw, MainMenu } from '@excalidraw/excalidraw'
 import * as CustomMenuItems from './Menu/CustomMenuItems.jsx'
 import { testData } from './testData'
 import './styles.css'
+
 window.testData = testData
 /******************************************************************************
-saveData: {
-    elements: ExcalidrawElement[],
-    appState: AppState,
-    libraryItems: LibraryItems | Promise<LibraryItems>,
-    files: BinaryFiles
-}
+ saveData: {
+ elements: ExcalidrawElement[],
+ appState: AppState,
+ libraryItems: LibraryItems | Promise<LibraryItems>,
+ files: BinaryFiles
+ }
 
-loadData: {
-    elements: ExcalidrawElement[],
-    appState: AppState,
-    scrollToContent: boolean,
-    libraryItems: LibraryItems | Promise<LibraryItems>,
-    files: BinaryFiles
-}
-******************************************************************************/
+ loadData: {
+ elements: ExcalidrawElement[],
+ appState: AppState,
+ scrollToContent: boolean,
+ libraryItems: LibraryItems | Promise<LibraryItems>,
+ files: BinaryFiles
+ }
+ ******************************************************************************/
 
-const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
+const ExcalidrawCustom = forwardRef(({ wire, ...props }, ref) => {
 
     const [excalidrawAPI, setExcalidrawAPI] = useState(null)
     const [libraryItems, setLibraryItems] = useState(null)
 
     const closeMenu = () => {
-        excalidrawAPI.updateScene({ appState: { openMenu: null }})
+        excalidrawAPI.updateScene({ appState: { openMenu: null } })
     }
+
+    const updateScene = async (data) => {
+
+        if (data === false) {
+            alert('Failed to load Whiteboard.')
+            return
+        }
+
+        const processFiles = (files) => {
+            return files.map(file => ({
+                id: file.id,
+                dataURL: file.dataURL,
+                mimeType: file.mimeType,
+                created: file.created || Date.now(),
+                lastRetrieved: Date.now()
+            }));
+        };
+
+        try {
+            // First update scene
+            await excalidrawAPI.updateScene({
+                elements: data.elements,
+            });
+
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+
+            const files = Array.from(data.files)
+
+            // Then add files if they exist
+            if (files && files.length > 0) {
+
+                const processedFiles = processFiles(files)
+
+                await excalidrawAPI.addFiles(processedFiles)
+            }
+
+            excalidrawAPI.refresh()
+        } catch (error) {
+            console.error('Error updating scene:', error)
+        }
+
+
+        excalidrawAPI.setToast({
+            message: 'Whiteboard loaded successfully',
+            closable: true,
+            duration: 3000,
+        })
+    }
+
 
     useEffect(() => {
         if (!excalidrawAPI) {
@@ -44,26 +95,7 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
         // Register the event listener
         const unsubscribe = Livewire.on('boot-whiteboard-with', () => {
 
-            wire.loadData().then(async data => {
-                if (data === false) {
-                    alert('Failed to load Whiteboard.')
-                    return
-                }
-
-                await excalidrawAPI.addFiles(Array.from(data.files))
-
-                await excalidrawAPI.updateScene({
-                    elements: data.elements,
-                })
-
-                console.log(data)
-
-                excalidrawAPI.setToast({
-                    message: 'Whiteboard loaded successfully',
-                    closable: true,
-                    duration: 3000,
-                })
-            })
+            wire.loadData().then(updateScene)
         })
 
         // Cleanup function to remove the event listener
@@ -112,8 +144,8 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
     }))
 
     return (
-        <div style={{ height: "100vh", width: "100vw" }}>
-            <ExcalidrawApp
+        <div style={{ height: '100vh', width: '100vw' }}>
+            <Excalidraw
                 onChange={(elements, appState, files) => {
                     /*
                     //excalidrawAPI might be null
@@ -138,9 +170,9 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
                     <MainMenu.DefaultItems.ToggleTheme />
                     <MainMenu.DefaultItems.ChangeCanvasBackground />
                 </MainMenu>
-            </ExcalidrawApp>
+            </Excalidraw>
         </div>
     )
 })
 
-export default Excalidraw
+export default ExcalidrawCustom
