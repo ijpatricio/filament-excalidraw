@@ -50,7 +50,19 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
                     return
                 }
 
-                excalidrawAPI.updateScene(data)
+                excalidrawAPI.addFiles(Array.from(data.files))
+
+                excalidrawAPI.updateScene({
+                    elements: data.elements,
+                })
+
+                console.log(data)
+
+                excalidrawAPI.setToast({
+                    message: 'Whiteboard loaded successfully',
+                    closable: true,
+                    duration: 3000,
+                })
             })
         })
 
