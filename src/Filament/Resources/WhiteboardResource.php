@@ -47,7 +47,7 @@ class WhiteboardResource extends Resource
                 Tables\Actions\Action::make('Edit Whiteboard')
                     ->icon('heroicon-o-document')
                     ->action(function (Whiteboard $record, $livewire) {
-                        $livewire->dispatch('boot-whiteboard-with', whiteboard_id: $record->getKey());
+                        $livewire->dispatch('boot-whiteboard-with', whiteboardId: $record->getKey());
                     }),
             ])
             ->bulkActions([

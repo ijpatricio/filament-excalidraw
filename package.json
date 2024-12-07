@@ -9,7 +9,7 @@
         "purge": "filament-purge -i resources/dist/filament-excalidraw.css -o resources/dist/filament-excalidraw.css -v 3.x",
         "dev": "npm-run-all --parallel dev:*",
         "build": "npm-run-all build:*",
-        "build-publish": "npm-run-all build:* ; docker compose run webapp bash -c \"php artisan filament:upgrade\""
+        "build-publish": "npm-run-all build:* ; docker compose exec webapp bash -c \"php artisan filament:upgrade\""
     },
     "devDependencies": {
         "@awcodes/filament-plugin-purge": "^1.1.1",

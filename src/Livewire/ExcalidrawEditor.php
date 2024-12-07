@@ -2,27 +2,22 @@
 
 namespace Ijpatricio\FilamentExcalidraw\Livewire;
 
-use App\Models\User;
-use Ijpatricio\Mingle\Concerns\InteractsWithMingles;
+use Ijpatricio\FilamentExcalidraw\Models\Whiteboard;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Renderless;
 use Livewire\Component;
 
 class ExcalidrawEditor extends Component
 {
-    use InteractsWithMingles;
-
     public $mingleId;
+
+    public ?string $whiteboardId = null;
 
     public function mount()
     {
         $this->mingleId = 'mingle-' . Str::random();
-    }
-
-    public function component(): string
-    {
-        return 'Excalidraw/index.jsx';
     }
 
     public function mingleData(): Collection
@@ -30,11 +25,41 @@ class ExcalidrawEditor extends Component
         return collect();
     }
 
-    #[Renderless]
-    public function countUsers()
+    #[On('boot-whiteboard-with')]
+    public function bootWhiteboardWith($whiteboardId): void
     {
-        dd('hereeee delete');
-        return User::count();
+        $this->whiteboardId = $whiteboardId;
+
+        $this->dispatch('open-modal', id: 'edit-whiteboard-modal');
+    }
+
+    #[Renderless]
+    public function loadData()
+    {
+        try {
+            $whiteboard = Whiteboard::findOrFail($this->whiteboardId);
+
+            return $whiteboard->data;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    #[Renderless]
+    public function save($data)
+    {
+        $whiteboard = Whiteboard::find($this->whiteboardId);
+
+        ray($data);
+
+        try {
+            $whiteboard->data = $data;
+            $whiteboard->save();
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
     }
 
     public function render(): mixed

@@ -1,9 +1,10 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useState, useRef } from 'react'
 import { Excalidraw as ExcalidrawApp, MainMenu } from "@excalidraw/excalidraw"
-// import { testData } from '../../../../mingle/resources/js/testData'
+import * as CustomMenuItems from './Menu/CustomMenuItems.jsx'
+import { testData } from './testData'
 import './styles.css'
-
-/*
+window.testData = testData
+/******************************************************************************
 saveData: {
     elements: ExcalidrawElement[],
     appState: AppState,
@@ -18,22 +19,15 @@ loadData: {
     libraryItems: LibraryItems | Promise<LibraryItems>,
     files: BinaryFiles
 }
-*/
-
+******************************************************************************/
 
 const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
-    //const message = props.mingleData.message
-    console.log(props)
 
     const [excalidrawAPI, setExcalidrawAPI] = useState(null)
     const [libraryItems, setLibraryItems] = useState(null)
 
-    const onSave = (data) => {
-        console.log("save data: ", data)
-    }
-
-    const onClose = () => {
-        Livewire.dispatch('close-modal', { id: 'edit-whiteboard-modal' })
+    const closeMenu = () => {
+        excalidrawAPI.updateScene({ appState: { openMenu: null }})
     }
 
     useEffect(() => {
@@ -42,17 +36,44 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
         }
 
         // Publishing the excalidrawAPI to window
-        // api.getAppState(), api.getSceneElements(),
-        window.excalidrawAPI = excalidrawAPI
+        window.api = excalidrawAPI
     }, [excalidrawAPI])
+
+    useEffect(() => {
+
+        // Register the event listener
+        const unsubscribe = Livewire.on('boot-whiteboard-with', () => {
+
+            wire.loadData().then(data => {
+                if (data === false) {
+                    alert('Failed to load Whiteboard.')
+                    return
+                }
+
+                excalidrawAPI?.updateScene(data)
+            })
+        })
+
+        // Cleanup function to remove the event listener
+        return () => unsubscribe()
+    })
+
+    const onClose = () => {
+        if (!excalidrawAPI) {
+            return
+        }
+        closeMenu()
+        Livewire.dispatch('close-modal', { id: 'edit-whiteboard-modal' })
+    }
 
     const saveSceneData = () => {
         if (!excalidrawAPI) {
             return
         }
+
         const appState = excalidrawAPI.getAppState()
 
-        onSave({
+        const payload = {
             elements: excalidrawAPI.getSceneElements(),
             appState: {
                 zenModeEnabled: appState.zenModeEnabled,
@@ -62,46 +83,16 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
             },
             libraryItems: libraryItems,
             files: excalidrawAPI.getFiles(),
+        }
+
+        wire.save(payload).then(data => {
+            if (data === true) {
+                closeMenu()
+                return
+            }
+
+            alert('Failed to save the Whiteboard')
         })
-    }
-
-    const renderMenu = () => {
-        return (
-            <MainMenu>
-                <MainMenu.ItemCustom>
-                    <button
-                        className="button"
-                        onClick={() => {
-                            console.log("saving scene data")
-                            saveSceneData()
-                        }}
-                    >
-                        Save
-                    </button>
-                </MainMenu.ItemCustom>
-
-                <MainMenu.ItemCustom>
-                    <button
-                        className="button"
-                        onClick={() => {
-                            onClose()
-                        }}
-                    >
-                        Close
-                    </button>
-                </MainMenu.ItemCustom>
-
-                <MainMenu.DefaultItems.LoadScene />
-                <MainMenu.DefaultItems.SaveToActiveFile />
-                <MainMenu.DefaultItems.Export />
-                <MainMenu.DefaultItems.SaveAsImage />
-                <MainMenu.DefaultItems.Help />
-                <MainMenu.DefaultItems.ClearCanvas />
-                <MainMenu.Separator />
-                <MainMenu.DefaultItems.ToggleTheme />
-                <MainMenu.DefaultItems.ChangeCanvasBackground />
-            </MainMenu>
-        )
     }
 
     useImperativeHandle(ref, () => ({
@@ -120,9 +111,22 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
                     */
                 }}
                 excalidrawAPI={(api) => setExcalidrawAPI(api)}
-                initialData={props.initialData}
                 onLibraryChange={(items) => setLibraryItems(items)}
-            >{renderMenu()}</ExcalidrawApp>
+            >
+                <MainMenu>
+                    <CustomMenuItems.CloseMenuItem onClick={onClose} />
+                    <CustomMenuItems.SaveMenuItem onClick={saveSceneData} />
+                    <MainMenu.DefaultItems.LoadScene />
+                    <MainMenu.DefaultItems.SaveToActiveFile />
+                    <MainMenu.DefaultItems.Export />
+                    <MainMenu.DefaultItems.SaveAsImage />
+                    <MainMenu.DefaultItems.Help />
+                    <MainMenu.DefaultItems.ClearCanvas />
+                    <MainMenu.Separator />
+                    <MainMenu.DefaultItems.ToggleTheme />
+                    <MainMenu.DefaultItems.ChangeCanvasBackground />
+                </MainMenu>
+            </ExcalidrawApp>
         </div>
     )
 })
