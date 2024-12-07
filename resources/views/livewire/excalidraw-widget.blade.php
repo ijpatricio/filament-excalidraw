@@ -9,28 +9,16 @@
 >
     <style>
         .fi-modal-content {
-            /*padding: 0;*/
+            padding: 0;
         }
     </style>
 
     <x-filament::modal
         class="excalidraw-modal"
         id="edit-whiteboard-modal"
-        width="xl"
-        displayClasses="'inline-block foobar"
+        width="screen"
+        displayClasses="inline-block"
     >
-        <div>
-            ffff
-        </div>
         <livewire:excalidraw-editor />
     </x-filament::modal>
 </div>
-
-@script
-<script>
-    setTimeout(() => {
-        console.log('heeere :)')
-        // window.mountWhiteboard(document.getElementById('whiteboard-editor'), $wire)
-    }, 500)
-</script>
-@endscript

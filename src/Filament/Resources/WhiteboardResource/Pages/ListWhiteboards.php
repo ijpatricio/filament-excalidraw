@@ -4,8 +4,11 @@ namespace Ijpatricio\FilamentExcalidraw\Filament\Resources\WhiteboardResource\Pa
 
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 use Ijpatricio\FilamentExcalidraw\Livewire\ExcalidrawWidget;
 use Ijpatricio\FilamentExcalidraw\Filament\Resources\WhiteboardResource;
+use Illuminate\Support\HtmlString;
 
 class ListWhiteboards extends ListRecords
 {
@@ -23,5 +26,19 @@ class ListWhiteboards extends ListRecords
         return [
             ExcalidrawWidget::class,
         ];
+    }
+
+    public function mount(): void
+    {
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::BODY_END,
+            fn() => new HtmlString("
+                <script>
+                    setTimeout(() => {
+                        document.querySelector('tbody div > div > button > span').click()
+                    }, 200)
+                </script>
+            ")
+        );
     }
 }

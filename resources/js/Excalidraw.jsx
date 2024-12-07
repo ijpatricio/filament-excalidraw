@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
-import { Excalidraw as ExcalidrawApp, MainMenu } from "@excalidraw/excalidraw";
-// import { testData } from '../../../../mingle/resources/js/testData';
-import './styles.css';
+import { Excalidraw as ExcalidrawApp, MainMenu } from "@excalidraw/excalidraw"
+// import { testData } from '../../../../mingle/resources/js/testData'
+import './styles.css'
 
 /*
 saveData: {
@@ -23,27 +23,36 @@ loadData: {
 
 const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
     //const message = props.mingleData.message
-    // console.log(props.initialData);
+    console.log(props)
 
-    const [excalidrawAPI, setExcalidrawAPI] = useState(null);
-    const [libraryItems, setLibraryItems] = useState(null);
+    const [excalidrawAPI, setExcalidrawAPI] = useState(null)
+    const [libraryItems, setLibraryItems] = useState(null)
+
+    const onSave = (data) => {
+        console.log("save data: ", data)
+    }
+
+    const onClose = () => {
+        Livewire.dispatch('close-modal', { id: 'edit-whiteboard-modal' })
+    }
 
     useEffect(() => {
         if (!excalidrawAPI) {
-            return;
+            return
         }
-        //publishing the excalidrawAPI to window
-        //api.getAppState(), api.getSceneElements(),
-        window.api = excalidrawAPI;
-    }, [excalidrawAPI]);
+
+        // Publishing the excalidrawAPI to window
+        // api.getAppState(), api.getSceneElements(),
+        window.excalidrawAPI = excalidrawAPI
+    }, [excalidrawAPI])
 
     const saveSceneData = () => {
         if (!excalidrawAPI) {
-            return;
+            return
         }
-        const appState = excalidrawAPI.getAppState();
+        const appState = excalidrawAPI.getAppState()
 
-        props.onSave({
+        onSave({
             elements: excalidrawAPI.getSceneElements(),
             appState: {
                 zenModeEnabled: appState.zenModeEnabled,
@@ -53,11 +62,7 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
             },
             libraryItems: libraryItems,
             files: excalidrawAPI.getFiles(),
-        });
-    }
-
-    const close = () => {
-        props.close();
+        })
     }
 
     const renderMenu = () => {
@@ -67,8 +72,8 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
                     <button
                         className="button"
                         onClick={() => {
-                            console.log("saving scene data");
-                            saveSceneData();
+                            console.log("saving scene data")
+                            saveSceneData()
                         }}
                     >
                         Save
@@ -79,7 +84,7 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
                     <button
                         className="button"
                         onClick={() => {
-                            close();
+                            onClose()
                         }}
                     >
                         Close
@@ -101,7 +106,7 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
 
     useImperativeHandle(ref, () => ({
         saveSceneData: saveSceneData,
-    }));
+    }))
 
     return (
         <div style={{ height: "100vh", width: "100vw" }}>
@@ -110,7 +115,7 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
                     /*
                     //excalidrawAPI might be null
                     if(appState.viewModeEnabled === false){
-                        excalidrawAPI.updateScene({appState: {viewModeEnabled: true}});
+                        excalidrawAPI.updateScene({appState: {viewModeEnabled: true}})
                     }
                     */
                 }}
@@ -120,6 +125,6 @@ const Excalidraw = forwardRef(({ wire, ...props }, ref) => {
             >{renderMenu()}</ExcalidrawApp>
         </div>
     )
-});
+})
 
-export default Excalidraw;
+export default Excalidraw

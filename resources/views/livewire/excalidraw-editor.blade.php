@@ -3,13 +3,6 @@
     use Filament\Support\Facades\FilamentAsset;
 @endphp
 
-{{--@push(config('mingle.stack'))--}}
-{{--    @vite($this->component())--}}
-{{--@endpush--}}
-
-{{-- This is the container for the Mingle component.                                     --}}
-{{-- It's an Alpine component, because this it becomes seamless to hook into Livewire's --}}
-{{-- event lifecycle hooks, including some that would need PR atm (wire:navigate)       --}}
 <div
     ax-load-css="{{ FilamentAsset::getStyleHref('filament-excalidraw-styles', package: 'ijpatricio/filament-excalidraw') }}"
     ax-load-src="{{ FilamentAsset::getScriptSrc('filament-excalidraw-scripts', package: 'ijpatricio/filament-excalidraw') }}"
