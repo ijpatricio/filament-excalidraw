@@ -8,8 +8,10 @@ use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
+use Ijpatricio\FilamentExcalidraw\Livewire\ExcalidrawEditor;
 use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
+use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -87,6 +89,8 @@ class FilamentExcalidrawServiceProvider extends PackageServiceProvider
 
         // Testing
         Testable::mixin(new TestsFilamentExcalidraw);
+
+        Livewire::component('excalidraw-editor', ExcalidrawEditor::class);
     }
 
     protected function getAssetPackageName(): ?string
@@ -146,7 +150,7 @@ class FilamentExcalidrawServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            'create_filament-excalidraw_table',
+            'create_laravel_whiteboards_table',
         ];
     }
 }

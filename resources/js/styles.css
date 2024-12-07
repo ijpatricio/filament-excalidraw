@@ -1,0 +1,45 @@
+.button {
+    background-color: transparent;
+    border: 1px solid transparent;
+    align-items: center;
+    height: 2rem;
+    cursor: pointer;
+    border-radius: 0.375rem;
+    width: 100%;
+
+    :is(.button--selected) {
+        background: #e3e2fe;
+        --icon-fill-color: #5b57d1;
+    }
+
+    :is(.button__text) {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        gap: 0.75rem;
+    }
+
+    :is(.button__shortcut) {
+        margin-inline-start: auto;
+        opacity: 0.5;
+    }
+
+    &:hover {
+        background-color: hsl(244, 100%, 97%);
+        text-decoration: none;
+    }
+
+    &:active {
+        background-color: hsl(244, 100%, 97%);
+        border-color: #4440bf;
+    }
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+        display: block;
+    }
+}

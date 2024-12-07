@@ -4,6 +4,7 @@ namespace Ijpatricio\FilamentExcalidraw;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Ijpatricio\FilamentExcalidraw\Filament\Resources\WhiteboardResource;
 
 class FilamentExcalidrawPlugin implements Plugin
 {
@@ -14,7 +15,9 @@ class FilamentExcalidrawPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        //
+        $panel->resources([
+            WhiteboardResource::class,
+        ]);
     }
 
     public function boot(Panel $panel): void

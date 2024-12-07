@@ -4,8 +4,9 @@ services:
       context: .
       dockerfile: docker/dev/runtimes/php/Dockerfile
       args:
-        USER_ID: $USER_ID
-        GROUP_ID: $GROUP_ID
+        # Default values for the user and group id on MacOS. You may override in .env
+        USER_ID: ${USER_ID:-501}
+        GROUP_ID: ${GROUP_ID:-20}
     image: playground-filament-excalidraw
     extra_hosts:
       - 'host.docker.internal:host-gateway'
