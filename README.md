@@ -1,13 +1,15 @@
+<p align="center">
+<img src="./art/logo-cover.png" style="width: 500px; border-radius: 12px; margin: 20px; box-shadow: 5px 5px 20px rgb(45 114 253);" >
+</p>
+
+<a href="https://github.com/ijpatricio/filament-excalidraw/actions"><img src="https://github.com/ijpatricio/filament-excalidraw/workflows/Tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/ijpatricio/filament-excalidraw"><img src="https://img.shields.io/packagist/dt/ijpatricio/filament-excalidraw" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/ijpatricio/filament-excalidraw"><img src="https://img.shields.io/packagist/v/ijpatricio/filament-excalidraw" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/ijpatricio/filament-excalidraw"><img src="https://img.shields.io/packagist/l/ijpatricio/filament-excalidraw" alt="License"></a>
+
 # A whiteboard with Excalidraw, for Filament
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/ijpatricio/filament-excalidraw.svg?style=flat-square)](https://packagist.org/packages/ijpatricio/filament-excalidraw)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/ijpatricio/filament-excalidraw/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/ijpatricio/filament-excalidraw/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/ijpatricio/filament-excalidraw/fix-php-code-styling.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/ijpatricio/filament-excalidraw/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/ijpatricio/filament-excalidraw.svg?style=flat-square)](https://packagist.org/packages/ijpatricio/filament-excalidraw)
-
-
-
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+A picture is worth a thousand words. Express yourself with shapes, diagrams, and pictures.
 
 ## Installation
 
@@ -21,6 +23,7 @@ You can publish and run the migrations with:
 
 ```bash
 php artisan vendor:publish --tag="filament-excalidraw-migrations"
+
 php artisan migrate
 ```
 
