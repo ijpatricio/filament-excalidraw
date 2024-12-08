@@ -22,11 +22,12 @@ RUN install-php-extensions intl
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
 
-RUN echo "alias ll='ls -al'" >> /etc/bash.bashrc
-RUN echo "alias a='php artisan'" >> /etc/bash.bashrc
-RUN echo "alias mfs='php artisan migrate:fresh --seed'" >> /etc/bash.bashrc
-RUN echo "alias cda='composer dump-autoload'" >> /etc/bash.bashrc
-RUN echo "alias run='./run'" >> /etc/bash.bashrc
+# Alias
+RUN echo "alias ll='ls -al'" >> /etc/bash.bashrc && \
+    echo "alias a='php artisan'" >> /etc/bash.bashrc  && \
+    echo "alias mfs='php artisan migrate:fresh --seed'" >> /etc/bash.bashrc  && \
+    echo "alias cda='composer dump-autoload'" >> /etc/bash.bashrc  && \
+    echo "alias run='./run'" >> /etc/bash.bashrc
 
 # Use the build arguments to change the UID
 # and GID of www-data while also changing
