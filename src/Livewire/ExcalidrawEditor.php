@@ -50,8 +50,6 @@ class ExcalidrawEditor extends Component
     {
         $whiteboard = Whiteboard::find($this->whiteboardId);
 
-        ray($data);
-
         try {
             $whiteboard->data = $data;
             $whiteboard->save();

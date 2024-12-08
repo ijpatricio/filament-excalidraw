@@ -17,4 +17,8 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    build: {
+        // Insane, I know! :)
+        chunkSizeWarningLimit: 2000,
+    },
 });

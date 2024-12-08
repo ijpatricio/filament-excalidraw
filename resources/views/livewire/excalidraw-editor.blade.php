@@ -5,7 +5,7 @@
 
 
 <div
-{{--/* Playground Vite (Faster vs package Esbuild commands)  */--}}
+{{-- Playground Vite (Faster vs package Esbuild commands) --}}
 {{--    ax-load-css="{{ FilamentAsset::getStyleHref('filament-excalidraw-styles', package: 'ijpatricio/filament-excalidraw') }}"--}}
 {{--    ax-load-src="{{ FilamentAsset::getScriptSrc('filament-excalidraw-scripts', package: 'ijpatricio/filament-excalidraw') }}"--}}
     x-init="
