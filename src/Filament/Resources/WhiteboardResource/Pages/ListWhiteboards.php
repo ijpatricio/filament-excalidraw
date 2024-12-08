@@ -31,12 +31,25 @@ class ListWhiteboards extends ListRecords
 
     public function mount(): void
     {
-        /* Playground Vite (Faster vs package Esbuild commands)  */
+        /* Playground with Vite (Faster vs package Esbuild commands)  */
+//        $this->loadPlaygroundViteExcalidrawBundle();
+
+//        $this->registerFunctionForAutoClickOnPageLoad();
+    }
+
+    private function loadPlaygroundViteExcalidrawBundle()
+    {
         FilamentView::registerRenderHook(
             PanelsRenderHook::HEAD_END,
             fn() => app(Vite::class)('resources/js/dev-excalidraw.js'),
         );
+    }
 
+    /**
+     * @return void
+     */
+    public function registerFunctionForAutoClickOnPageLoad(): void
+    {
         FilamentView::registerRenderHook(
             PanelsRenderHook::BODY_END,
             fn() => new HtmlString("
