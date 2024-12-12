@@ -27,30 +27,16 @@ php artisan vendor:publish --tag="filament-excalidraw-migrations"
 php artisan migrate
 ```
 
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="filament-excalidraw-config"
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="filament-excalidraw-views"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
 ## Usage
 
 ```php
-$filamentExcalidraw = new Ijpatricio\FilamentExcalidraw();
-echo $filamentExcalidraw->echoPhrase('Hello, Ijpatricio!');
+// app/Providers/Filament/AdminPanelProvider.php
+
+// ...
+    ->resources([
+        \Ijpatricio\FilamentExcalidraw\Filament\Resources\WhiteboardResource::class,
+    ])
+// ...
 ```
 
 ## Testing
