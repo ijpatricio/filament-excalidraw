@@ -34,7 +34,6 @@ const ExcalidrawCustom = forwardRef(({ wire, ...props }, ref) => {
     const updateScene = async (data) => {
 
         if (data === false) {
-            alert('Failed to load Whiteboard.')
             return
         }
 
